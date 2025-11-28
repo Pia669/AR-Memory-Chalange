@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TestMultiplayerScene.unity
     guid: 7fe3a9519dd86434f805bcdfea09bcee
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c5ae79a7ba3226043a1e3cbfffb606c0, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3e7c3b4a1e81108408393a15901fe19e, type: 2}
   m_UseUCBPForAssetBundles: 0
