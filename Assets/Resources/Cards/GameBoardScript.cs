@@ -28,6 +28,7 @@ public class GameBoardScript : MonoBehaviour
     public TextMeshProUGUI endGameText; 
     public int gameTime = 60; 
     private Coroutine timerCoroutine;
+    public Transform parent;
 
     private void Awake()
     {
@@ -165,9 +166,10 @@ public class GameBoardScript : MonoBehaviour
                 cards[cardsDone] = Instantiate(
                     card,
                     topRight - CalcOffset(row, collum),
-                    transform.rotation
+                    transform.rotation,
+                    parent
                     );
-
+            
                 cardsDone++;
             }
         }

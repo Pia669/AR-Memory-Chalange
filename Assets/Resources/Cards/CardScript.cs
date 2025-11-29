@@ -6,6 +6,7 @@ public class CardScript : MonoBehaviour
     public int pairNumber = 0;
 
     private bool faseUp = false;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

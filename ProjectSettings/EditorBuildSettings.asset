@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MemoryChallenge.unity
     guid: c4456f9ecfbccef4397358027d4f057f
   - enabled: 1
     path: Assets/Scenes/TestMultiplayerScene.unity
-    guid: 7fe3a9519dd86434f805bcdfea09bcee
+    guid: 45df60dac7b475b4689fad3dde3d7026
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c5ae79a7ba3226043a1e3cbfffb606c0, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3e7c3b4a1e81108408393a15901fe19e, type: 2}
