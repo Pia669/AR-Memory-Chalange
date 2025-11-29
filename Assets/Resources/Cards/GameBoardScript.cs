@@ -52,11 +52,8 @@ public class GameBoardScript : MonoBehaviour
     {
         Ray ray = mainCamera.ScreenPointToRay(action.ReadValue<Vector2>());
         RaycastHit hit;
-        Debug.Log(ray);
-        Debug.DrawRay(ray.origin, ray.direction*100, Color.red, 1000);
         if (Physics.Raycast(ray, out hit)) 
         {
-            Debug.Log("Hit");
             bool wasTurned = false;
             if (hit.collider != null)
             {

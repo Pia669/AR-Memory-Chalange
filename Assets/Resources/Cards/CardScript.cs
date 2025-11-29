@@ -21,13 +21,14 @@ public class CardScript : MonoBehaviour
 
     public bool flipCard()
     {
+        Debug.Log("flip");
         if (faseUp)
         {
             return false;
         }
 
         faseUp = true;
-        transform.Rotate(0.0f, 0.0f, 0.0f);
+        transform.Rotate(0.0f, 0.0f, 180);
 
         return true;
     }
@@ -35,7 +36,7 @@ public class CardScript : MonoBehaviour
     public void returnCard()
     {
         faseUp = false;
-        transform.Rotate(0.0f, 0.0f, 90);
+        transform.Rotate(0.0f, 0.0f, 0.0f);
     }
 
     public void assassingPair(int number) 
