@@ -1,6 +1,8 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class GameBoardScript : MonoBehaviour
 {
@@ -16,6 +18,16 @@ public class GameBoardScript : MonoBehaviour
     private CardControl cardControl;
     private Camera mainCamera;
     private GameObject[] cards;
+
+    private int score = 0;
+    private CardScript firstCard = null;
+    private CardScript secondCard = null;
+    private bool isChecking = false;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText; 
+    public TextMeshProUGUI endGameText; 
+    public int gameTime = 60; 
+    private Coroutine timerCoroutine;
 
     private void Awake()
     {
@@ -40,6 +52,34 @@ public class GameBoardScript : MonoBehaviour
         cardControl.Touch.DebugClick.started += _ => DetectObject(cardControl.Touch.DebugPos);
         SpawnCards();
         AssingCardsPairs();
+
+        timerCoroutine = StartCoroutine(CountdownTimer()); 
+    }
+
+    IEnumerator CountdownTimer()
+    {
+        int remainingTime = gameTime;
+
+        while (remainingTime > 0)
+        {
+            timerText.text = "Time: " + remainingTime +"s";
+            yield return new WaitForSeconds(1f);
+            remainingTime--;
+        }
+
+        timerText.text = "Time: 0s";
+
+        
+        if (score == numberOfPairs) 
+        {
+            endGameText.text = "YOU WIN";
+        }
+        else
+        {
+            endGameText.text = "YOU LOSE";
+        }
+
+        this.enabled = false;
     }
 
     // Update is called once per frame
@@ -50,21 +90,33 @@ public class GameBoardScript : MonoBehaviour
 
     private void DetectObject(UnityEngine.InputSystem.InputAction action)
     {
+        if (isChecking) return;
+
         Ray ray = mainCamera.ScreenPointToRay(action.ReadValue<Vector2>());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit)) 
         {
-            bool wasTurned = false;
-            if (hit.collider != null)
-            {
-                Debug.Log("Hit:" + hit.collider.tag);
-                wasTurned = hit.collider.GetComponent<CardScript>().flipCard();
-            }
+            CardScript clicked = hit.collider.GetComponent<CardScript>();
 
-            if (wasTurned)
-            {
 
+            if (clicked == null) return;
+
+            // Tá istá karta druhý krát
+            if (clicked == firstCard) return;
+            
+            // Už je otočená
+            if (!clicked.flipCard()) return;
+
+            if (firstCard == null)
+            {
+                firstCard = clicked;
             }
+            else
+            {
+                secondCard = clicked;
+                StartCoroutine(CheckMatch());
+            }
+            
         }
     }
 
@@ -83,7 +135,7 @@ public class GameBoardScript : MonoBehaviour
             {
                 pairNumber = UnityEngine.Random.Range(0, numberOfPairs);
             }
-
+            pairs[pairNumber]-=1;
             cards[c].GetComponent<CardScript>().assassingPair(pairNumber);
         }
     }
@@ -129,5 +181,39 @@ public class GameBoardScript : MonoBehaviour
             0,
             row * (CARD_SIDE + CARD_SPACING)
             );
+    }
+
+    IEnumerator CheckMatch()
+    {
+        isChecking = true;
+
+        if (firstCard.pairNumber == secondCard.pairNumber)
+        {
+            score++;
+            UpdateScoreUI();
+            if(score == numberOfPairs)
+            {
+                endGameText.text = "YOU WIN";
+                StopCoroutine(timerCoroutine);
+                this.enabled = false;
+            }
+        }
+        else
+        {
+            Debug.Log("starting");
+            yield return new WaitForSeconds(1);
+            Debug.Log("ending");
+            firstCard.returnCard();
+            secondCard.returnCard();
+        }
+
+        firstCard = null;
+        secondCard = null;
+        isChecking = false;
+    }
+
+    void UpdateScoreUI()
+    {
+        scoreText.text = "Score: " + score;
     }
 }

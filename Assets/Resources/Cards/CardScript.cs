@@ -36,7 +36,8 @@ public class CardScript : MonoBehaviour
     public void returnCard()
     {
         faseUp = false;
-        transform.Rotate(0.0f, 0.0f, 0.0f);
+        transform.rotation = Quaternion.identity;
+        //transform.Rotate(0.0f, 0.0f, 0.0f);
     }
 
     public void assassingPair(int number) 
@@ -48,4 +49,5 @@ public class CardScript : MonoBehaviour
             gameObject.GetComponent<Renderer>().material = mat;
         }
     }
+
 }
