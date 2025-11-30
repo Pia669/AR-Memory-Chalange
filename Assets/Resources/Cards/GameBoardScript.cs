@@ -22,10 +22,12 @@ public class GameBoardScript : MonoBehaviour
     private int score = 0;
     private CardScript firstCard = null;
     private CardScript secondCard = null;
+
     private bool isChecking = false;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText; 
-    public TextMeshProUGUI endGameText; 
+    public TextMeshProUGUI endGameText;
+    public GameObject endScreen;
     public int gameTime = 60; 
     private Coroutine timerCoroutine;
     public Transform parent;
@@ -63,21 +65,23 @@ public class GameBoardScript : MonoBehaviour
 
         while (remainingTime > 0)
         {
-            timerText.text = "Time: " + remainingTime +"s";
+            timerText.text = "Time:\n" + remainingTime +"s";
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
 
-        timerText.text = "Time: 0s";
+        timerText.text = "Time:\n0s";
 
         
         if (score == numberOfPairs) 
         {
             endGameText.text = "YOU WIN";
+            endScreen.SetActive(true);
         }
         else
         {
             endGameText.text = "YOU LOSE";
+            endScreen.SetActive(true);
         }
 
         this.enabled = false;
