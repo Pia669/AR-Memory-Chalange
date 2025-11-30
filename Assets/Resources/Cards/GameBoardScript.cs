@@ -9,7 +9,7 @@ public class GameBoardScript : MonoBehaviour
     int[] ROW_NUMBERS = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4 };
     int[] COL_NUMBERS = { 0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5 };
 
-    public const int CARD_SIDE = 5;
+    public const int CARD_SIDE = 4;
     public const int CARD_SPACING = 1;
 
     public GameObject card;
@@ -145,10 +145,10 @@ public class GameBoardScript : MonoBehaviour
     {
         cards = new GameObject[numberOfPairs * 2];
 
-        Vector3 topRight = transform.position - new Vector3(
-            -(COL_NUMBERS[numberOfPairs] * CARD_SIDE + (COL_NUMBERS[numberOfPairs] - 1) * CARD_SPACING) / 2,
+        Vector3 topRight = Vector3.zero - new Vector3(
+            -((COL_NUMBERS[numberOfPairs] - 1) * (CARD_SIDE + CARD_SPACING)) / 2,
             0,
-            -(ROW_NUMBERS[numberOfPairs] * CARD_SIDE + (ROW_NUMBERS[numberOfPairs] - 1) * CARD_SPACING) / 2
+            -((ROW_NUMBERS[numberOfPairs] - 1) * (CARD_SIDE + CARD_SPACING)) / 2
             );
 
         int cardsDone = 0;
