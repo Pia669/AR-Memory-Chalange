@@ -17,11 +17,11 @@ public class EndScreenScript : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("MemoryChallenge");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ToMainMenu()
     {
-        SceneManager.LoadScene("MemoryChallenge");
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

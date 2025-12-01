@@ -202,6 +202,7 @@ public class GameBoardScript : MonoBehaviour
                 endGameText.text = "YOU WIN";
                 StopCoroutine(timerCoroutine);
                 this.enabled = false;
+                endScreen.SetActive(true);
             }
         }
         else
