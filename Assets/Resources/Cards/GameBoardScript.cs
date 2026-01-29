@@ -6,8 +6,8 @@ using System.Collections;
 
 public class GameBoardScript : MonoBehaviour
 {
-    int[] ROW_NUMBERS = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4 };
-    int[] COL_NUMBERS = { 0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5 };
+    int[] ROW_NUMBERS = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4};
+    int[] COL_NUMBERS = { 0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5, 6, 6};
 
     public const int CARD_SIDE = 4;
     public const int CARD_SPACING = 1;
@@ -53,6 +53,8 @@ public class GameBoardScript : MonoBehaviour
     {
         cardControl.Touch.Tap.started += _ => DetectObject(cardControl.Touch.Position);
         cardControl.Touch.DebugClick.started += _ => DetectObject(cardControl.Touch.DebugPos);
+
+        numberOfPairs = GameSettings.Instance.GetNumberOfPairs();
         SpawnCards();
         AssingCardsPairs();
 

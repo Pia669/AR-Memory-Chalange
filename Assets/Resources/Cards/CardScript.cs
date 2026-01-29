@@ -11,12 +11,16 @@ public class CardScript : MonoBehaviour
 
     private bool faseUp = false;
     private float rotationProgress = -1;
+
+    private Quaternion initialRotation;
+    private Quaternion faceUpRotation;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        initialRotation = transform.rotation;
+        faceUpRotation = initialRotation * Quaternion.Euler(0, 0, 180);
     }
 
     // Update is called once per frame
@@ -27,8 +31,10 @@ public class CardScript : MonoBehaviour
             if (faseUp)
             {
                 TurnCard(FACE_DOWN_ROTATION, FACE_UP_ROTATION);
+                //TurnCard(initialRotation, faceUpRotation);
             } else
             {
+                //TurnCard(faceUpRotation, initialRotation);
                 TurnCard(FACE_UP_ROTATION, FACE_DOWN_ROTATION);
             }
         }
@@ -37,7 +43,9 @@ public class CardScript : MonoBehaviour
     private void TurnCard(Quaternion startRotation, Quaternion endRotation)
     {
         rotationProgress += Time.deltaTime * ROTATION_SPEED;
-        transform.rotation = Quaternion.Lerp(startRotation, endRotation, Math.Min(1, rotationProgress));
+       // transform.rotation = Quaternion.Lerp(startRotation, endRotation, Math.Min(1, rotationProgress));
+        transform.localRotation = Quaternion.Lerp(startRotation, endRotation, Math.Min(1, rotationProgress));
+
     }
 
     public bool flipCard()
@@ -63,7 +71,9 @@ public class CardScript : MonoBehaviour
     public void assassingPair(int number) 
     {
         pairNumber = number;
-        var mat = Resources.Load<Material>(String.Format("Cards/TestMaterials/m{0}", number));
+        string path = $"Cards/TestMaterials/{GameSettings.Instance.theme}/m{number}";
+        var mat = Resources.Load<Material>(path);
+        //var mat = Resources.Load<Material>(String.Format("Cards/TestMaterials/Animals/m{0}", number));
         if (mat != null)
         {
             gameObject.GetComponent<Renderer>().material = mat;
