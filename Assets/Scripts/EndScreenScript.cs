@@ -3,25 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class EndScreenScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public NetworkUI canvas;
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void ToMainMenu()
-    {
-        SceneManager.LoadScene("MainMenuScene");
+        canvas.StartGame();
     }
 }

@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MemoryChallenge.unity
     guid: c4456f9ecfbccef4397358027d4f057f
   - enabled: 0
-    path: Assets/Scenes/TestMultiplayerScene.unity
+    path: Assets/Scenes/MultiplayerScene.unity
     guid: 45df60dac7b475b4689fad3dde3d7026
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity

@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public enum GameMode { Singleplayer, Multiplayer }
+public enum GameType { Host, Client }
 public enum Difficulty { Easy, Medium, Hard }
 public enum CardTheme { Numbers, Animals, Fruits, Nature, Objects, Shapes }
 
@@ -9,6 +10,7 @@ public class GameSettings : MonoBehaviour
     public static GameSettings Instance;
 
     public GameMode gameMode = GameMode.Singleplayer;
+    public GameType gameType = GameType.Host;
     public Difficulty difficulty = Difficulty.Easy;
     public CardTheme theme = CardTheme.Numbers;
 

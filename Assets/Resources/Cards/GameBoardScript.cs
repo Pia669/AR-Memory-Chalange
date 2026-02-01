@@ -6,8 +6,8 @@ using System.Collections;
 
 public class GameBoardScript : MonoBehaviour
 {
-    int[] ROW_NUMBERS = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4};
-    int[] COL_NUMBERS = { 0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5, 6, 6};
+    readonly int[] ROW_NUMBERS = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4};
+    readonly int[] COL_NUMBERS = { 0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5, 6, 6};
 
     public const int CARD_SIDE = 4;
     public const int CARD_SPACING = 1;
@@ -16,7 +16,6 @@ public class GameBoardScript : MonoBehaviour
     public int numberOfPairs = 10;
 
     private CardControl cardControl;
-    private Camera mainCamera;
     private GameObject[] cards;
 
     private int score = 0;
@@ -35,7 +34,6 @@ public class GameBoardScript : MonoBehaviour
     private void Awake()
     {
         cardControl = new CardControl();
-        mainCamera = Camera.main;
     }
 
     private void OnEnable()
@@ -46,19 +44,6 @@ public class GameBoardScript : MonoBehaviour
     private void OnDisable()
     {
         cardControl.Disable();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        cardControl.Touch.Tap.started += _ => DetectObject(cardControl.Touch.Position);
-        cardControl.Touch.DebugClick.started += _ => DetectObject(cardControl.Touch.DebugPos);
-
-        numberOfPairs = GameSettings.Instance.GetNumberOfPairs();
-        SpawnCards();
-        AssingCardsPairs();
-
-        timerCoroutine = StartCoroutine(CountdownTimer()); 
     }
 
     IEnumerator CountdownTimer()
@@ -89,41 +74,48 @@ public class GameBoardScript : MonoBehaviour
         this.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool DetectObject(Ray ray)
     {
-        
-    }
+        if (isChecking) return false;
 
-    private void DetectObject(UnityEngine.InputSystem.InputAction action)
-    {
-        if (isChecking) return;
-
-        Ray ray = mainCamera.ScreenPointToRay(action.ReadValue<Vector2>());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit)) 
         {
             CardScript clicked = hit.collider.GetComponent<CardScript>();
 
 
-            if (clicked == null) return;
+            if (clicked == null) return false;
 
             // Tá istá karta druhý krát
-            if (clicked == firstCard) return;
+            if (clicked == firstCard) return false;
             
             // Už je otočená
-            if (!clicked.flipCard()) return;
+            if (!clicked.flipCard()) return false;
 
             if (firstCard == null)
             {
                 firstCard = clicked;
+                return false;
             }
             else
             {
                 secondCard = clicked;
-                StartCoroutine(CheckMatch());
+                CheckMatch();
             }
             
+        }
+        return true;
+    }
+
+    public void ReadyBoard()
+    {
+        numberOfPairs = GameSettings.Instance.GetNumberOfPairs();
+        SpawnCards();
+        AssingCardsPairs();
+
+        if (GameSettings.Instance.gameMode == GameMode.Singleplayer)
+        {
+            timerCoroutine = StartCoroutine(CountdownTimer());
         }
     }
 
@@ -191,15 +183,14 @@ public class GameBoardScript : MonoBehaviour
             );
     }
 
-    IEnumerator CheckMatch()
+    void CheckMatch()
     {
-        isChecking = true;
-
         if (firstCard.pairNumber == secondCard.pairNumber)
         {
             score++;
             UpdateScoreUI();
-            if(score == numberOfPairs)
+
+            if (score == numberOfPairs)
             {
                 endGameText.text = "YOU WIN";
                 StopCoroutine(timerCoroutine);
@@ -207,14 +198,19 @@ public class GameBoardScript : MonoBehaviour
                 endScreen.SetActive(true);
             }
         }
-        else
-        {
-            Debug.Log("starting");
-            yield return new WaitForSeconds(1);
-            Debug.Log("ending");
-            firstCard.returnCard();
-            secondCard.returnCard();
-        }
+
+        StartCoroutine(DealayedCardReturn());
+    }
+
+    IEnumerator DealayedCardReturn()
+    {
+        isChecking = true;
+
+        //Debug.Log("starting");
+        yield return new WaitForSeconds(2);
+        //Debug.Log("ending");
+        firstCard.returnCard();
+        secondCard.returnCard();
 
         firstCard = null;
         secondCard = null;

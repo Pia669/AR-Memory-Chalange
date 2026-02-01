@@ -4,6 +4,8 @@ using TMPro;
 
 public class SettingsUI : MonoBehaviour
 {
+    public NetworkUI canvas;
+
     public TMP_Dropdown modeDropdown;
     public TMP_Dropdown difficultyDropdown;
     public TMP_Dropdown themeDropdown;
@@ -23,7 +25,8 @@ public class SettingsUI : MonoBehaviour
 
         GameSettings.Instance.theme = (CardTheme)themeDropdown.value;
 
-        SceneManager.LoadScene("MainMenuScene");
+        canvas.HideSettings();
+        canvas.ShowMainMenu();
     }
 }
 
